@@ -17,13 +17,13 @@ export default {
       const vm = this;
       const client_id = "ae1a4aafa7d73032";
       const authority = "https://acc-account.asus.com.cn";
-      const host = "https://livechat.asus.com.cn/chat/#/";
+      // const host = "https://livechat.asus.com.cn/chat/#/";
 
       const mgr = new window.Oidc.UserManager({
         userStore: new window.Oidc.WebStorageStateStore(),
         authority: authority,
         client_id: client_id,
-        redirect_uri: host + "callback",
+        redirect_uri: "https://livechat.asus.com.cn/chat/callback.html",
         // post_logout_redirect_uri: redirect_uri,
         // silent_redirect_uri: redirect_uri,
         // accessTokenExpiringNotificationTime: 60,
