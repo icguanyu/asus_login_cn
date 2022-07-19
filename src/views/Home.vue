@@ -1,18 +1,68 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" src="../assets/logo.png" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+  name: "Home",
+  mounted() {
+    this.login();
+  },
+  methods: {
+    login() {
+      const vm = this;
+      const client_id = "ae1a4aafa7d73032";
+      const authority = "https://acc-account.asus.com.cn";
+      const host = "https://livechat.asus.com.cn/chat/#/";
+
+      const mgr = new window.Oidc.UserManager({
+        userStore: new window.Oidc.WebStorageStateStore(),
+        authority: authority,
+        client_id: client_id,
+        redirect_uri: host + "callback",
+        // post_logout_redirect_uri: redirect_uri,
+        // silent_redirect_uri: redirect_uri,
+        // accessTokenExpiringNotificationTime: 60,
+        response_type: "id_token token",
+        scope: "openid profile DefaultApi",
+        filterProtocolClaims: true,
+        // automaticSilentRenew: true,
+        //loadUserInfo: true,
+        metadata: {
+          issuer: authority,
+          authorization_endpoint: authority + "/connect/authorize",
+          userinfo_endpoint: authority + "/connect/userinfo",
+          end_session_endpoint: authority + "/connect/endsession",
+          jwks_uri: authority + "/.well-known/openid-configuration/jwks",
+        },
+      });
+
+      window.Oidc.Log.logger = console;
+
+      mgr
+        .getUser()
+        .then(function (user) {
+          console.log("user", user);
+          if (user == null) {
+            alert("user null! start sign in.");
+            vm.signIn(mgr);
+          } else {
+            console.log("getUser success:", user);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    signIn(mgr) {
+      mgr.signinRedirect().catch(function (err) {
+        console.log(err);
+      });
+    },
+  },
+};
 </script>
