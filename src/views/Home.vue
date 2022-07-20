@@ -43,6 +43,8 @@ export default {
 
       window.Oidc.Log.logger = console;
 
+      console.log("account.login.status:", account.login.status);
+
       mgr
         .getUser()
         .then(function (user) {
