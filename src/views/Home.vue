@@ -44,21 +44,35 @@ export default {
       window.Oidc.Log.logger = console;
 
       console.log("account.login.status:", account.login.status);
-
-      mgr
-        .getUser()
-        .then(function (user) {
-          console.log("user", user);
-          if (user == null) {
-            alert("user null! start sign in.");
-            vm.signIn(mgr);
+      let isLogin = account.login.status;
+      
+      if (isLogin) {
+        this.getUser(mgr, function (user) {
+          if (user) {
+            console.log("user:", user);
           } else {
-            console.log("getUser success:", user);
+            console.log("user null!!");
+            this.signIn(mgr);
           }
-        })
-        .catch((err) => {
-          console.log(err);
         });
+      }
+      // mgr
+      //   .getUser()
+      //   .then(function (user) {
+      //     console.log("user", user);
+      //     if (user == null) {
+      //       // alert("user null! start sign in.");
+      //       vm.signIn(mgr);
+      //     } else {
+      //       console.log("getUser success:", user);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    },
+    getUser(mgr, callback) {
+      mgr.getUser().then(callback);
     },
     signIn(mgr) {
       mgr.signinRedirect().catch(function (err) {
