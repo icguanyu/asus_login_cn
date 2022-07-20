@@ -52,7 +52,7 @@ export default {
             console.log("user:", user);
           } else {
             console.log("user null!!");
-            this.signIn(mgr);
+            vm.signIn(mgr);
           }
         });
       }
